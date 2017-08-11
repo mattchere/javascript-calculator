@@ -1,0 +1,36 @@
+@import url("reset.css");
+
+body {
+    background-color: slategrey;
+    color: #fff;
+}
+.calculator {
+    width: 240px;
+    height: 400px;
+    margin: auto;
+    position: absolute;
+    top: 0; left: 0; bottom: 0; right: 0;
+    background-color: white;
+    padding: 10px 10px 0 0;
+}
+.screen {
+    width: 230px;
+    height: 75px;
+    background-color: grey;
+    margin-left: 10px;
+}
+.btn {
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    background-color: black;
+    margin: 9px 0 0 10px;
+    text-align: center;
+}
+.btn p {
+    margin: auto;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+}
