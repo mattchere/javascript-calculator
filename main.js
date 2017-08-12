@@ -87,6 +87,7 @@ $(document).ready(function () {
                 expression.pop();
                 showExpression(expression, "");
                 currSymbol = expression.pop();
+                showSymbol("0");
                 return;
             }
             else {
