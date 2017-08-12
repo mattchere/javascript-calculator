@@ -25,7 +25,7 @@ body {
     border-radius: 10px;
 }
 .board div {
-    display: inline-block;    
+    display: inline-block;
 }
 #rows {
     width: 180px;
@@ -54,8 +54,12 @@ body {
 #zero {
     width: 110px;
 }
-.symbol {
+.symbol,
+.expression {
     text-align: right;
-    font-size: 50px;
     padding: 0 15px;
+}
+.symbol {
+    font-size: 50px;
+    margin-bottom: 5px;
 }
