@@ -32,6 +32,7 @@ $(document).ready(function () {
             return a - b;
         }
     };
+    var opStrings = ["&div;", "&times;", "&plus;", "&minus;"]
 
     function showSymbol(symbol) {
         $(".symbol p").html(symbol);
@@ -79,7 +80,18 @@ $(document).ready(function () {
     $(".btn").click(function (event) {
         var id = event.currentTarget.id;
         if (id === "ac" || id === "ce") {
-            currSymbol = "";
+            if (!currSymbol && !result == null) {
+                return;
+            }
+            if (opStrings.indexOf(currSymbol) !== -1) {
+                expression.pop();
+                showExpression(expression, "");
+                currSymbol = expression.pop();
+                return;
+            }
+            else {
+                currSymbol = "";
+            }
             result = null;
             showExpression(expression, "");
             if (id === "ac") {
@@ -88,38 +100,48 @@ $(document).ready(function () {
             }
             showSymbol("0");
         } else if (id === "equals") {
+            if (opStrings.indexOf(currSymbol) !== -1 || !currSymbol) {
+                return;
+            }
             if (currSymbol) {
                 expression.push(currSymbol);
-            }
-            else {
+            } else {
                 expression.push(result);
             }
-            currSymbol = calculate(expression);
-            var currExp = showExpression(expression, "=" + currSymbol);
-            expression = [];
-            showSymbol(currSymbol);
-            result = currSymbol;
-            currSymbol = "";
-
+            if (!operations.hasOwnProperty(expression[expression.length - 1])) {
+                currSymbol = calculate(expression);
+                showExpression(expression, "=" + currSymbol);
+                expression = [];
+                showSymbol(currSymbol);
+                result = currSymbol;
+                currSymbol = "";
+            }
         } else {
-            if (currSymbol === strings["mult"] || currSymbol === strings["divi"] || currSymbol === strings["subt"] || currSymbol === strings["add"]) {
+            if (opStrings.indexOf(currSymbol) !== -1) {
+                if (operations.hasOwnProperty(id)) {
+                    return;
+                }
                 currSymbol = "";
             } else if (operations.hasOwnProperty(id)) {
                 if (result) {
                     currSymbol = result;
                     result = null;
                 }
+                if (currSymbol === "") {
+                    return;
+                }
                 expression.push(currSymbol);
                 currSymbol = "";
                 expression.push(id);
+
             }
             result = null;
-            currSymbol += strings[id];
+            currSymbol += strings[id]
             if (currSymbol.length > 7) {
                 expression = ["DIGIT LIMIT MET"];
                 currSymbol = "  ERROR";
             }
-            if (currSymbol === strings["mult"] || currSymbol === strings["divi"] || currSymbol === strings["subt"] || currSymbol === strings["add"]) {
+            if (opStrings.indexOf(currSymbol) !== -1) {
                 showExpression(expression, "");
             } else {
                 showExpression(expression, currSymbol);
