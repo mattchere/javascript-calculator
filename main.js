@@ -40,14 +40,13 @@ $(document).ready(function () {
     function showExpression(expression, current) {
         if (Array.isArray(expression)) {
             var exp = expression.map(function (item) {
-                if (operations.hasOwnProperty(item)) {
-                    return strings[item];
-                }
-                return item;
-            })
+                    if (operations.hasOwnProperty(item)) {
+                        return strings[item];
+                    }
+                    return item;
+                })
                 .join("");
-        }
-        else {
+        } else {
             exp = expression.join("");
         }
         $(".expression p").html(exp + current);
@@ -70,16 +69,16 @@ $(document).ready(function () {
             ops.shift();
             return result;
         }, initial)
-        if (res%1 != 0) {
+        if (res % 1 != 0) {
             return res.toFixed(2);
         }
         return res;
-        
+
     }
     var result;
     $(".btn").click(function (event) {
         var id = event.currentTarget.id;
-                if (id === "ac" || id === "ce") {
+        if (id === "ac" || id === "ce") {
             currSymbol = "";
             result = null;
             showExpression(expression, "");
@@ -88,21 +87,24 @@ $(document).ready(function () {
                 showExpression(expression, "0");
             }
             showSymbol("0");
-        } 
-        else if (id === "equals") {
-            expression.push(currSymbol);
+        } else if (id === "equals") {
+            if (currSymbol) {
+                expression.push(currSymbol);
+            }
+            else {
+                expression.push(result);
+            }
             currSymbol = calculate(expression);
             var currExp = showExpression(expression, "=" + currSymbol);
             expression = [];
             showSymbol(currSymbol);
             result = currSymbol;
             currSymbol = "";
-        } 
-        else {
+
+        } else {
             if (currSymbol === strings["mult"] || currSymbol === strings["divi"] || currSymbol === strings["subt"] || currSymbol === strings["add"]) {
                 currSymbol = "";
-            } 
-            else if (operations.hasOwnProperty(id)) {
+            } else if (operations.hasOwnProperty(id)) {
                 if (result) {
                     currSymbol = result;
                     result = null;
@@ -119,11 +121,10 @@ $(document).ready(function () {
             }
             if (currSymbol === strings["mult"] || currSymbol === strings["divi"] || currSymbol === strings["subt"] || currSymbol === strings["add"]) {
                 showExpression(expression, "");
-            }
-            else {
+            } else {
                 showExpression(expression, currSymbol);
             }
-                showSymbol(currSymbol);
+            showSymbol(currSymbol);
         }
     });
 });
