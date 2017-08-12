@@ -76,31 +76,42 @@ $(document).ready(function () {
         return res;
         
     }
-
+    var result;
     $(".btn").click(function (event) {
         var id = event.currentTarget.id;
-        if (id === "ac" || id === "ce") {
+                if (id === "ac" || id === "ce") {
             currSymbol = "";
+            result = null;
             showExpression(expression, "");
             if (id === "ac") {
                 expression = [];
-                //showExpression(expression, "0");
+                showExpression(expression, "0");
             }
             showSymbol("0");
-        } else if (id === "equals") {
+        } 
+        else if (id === "equals") {
             expression.push(currSymbol);
             currSymbol = calculate(expression);
             var currExp = showExpression(expression, "=" + currSymbol);
             expression = [];
             showSymbol(currSymbol);
-        } else {
+            result = currSymbol;
+            currSymbol = "";
+        } 
+        else {
             if (currSymbol === strings["mult"] || currSymbol === strings["divi"] || currSymbol === strings["subt"] || currSymbol === strings["add"]) {
                 currSymbol = "";
-            } else if (operations.hasOwnProperty(id)) {
+            } 
+            else if (operations.hasOwnProperty(id)) {
+                if (result) {
+                    currSymbol = result;
+                    result = null;
+                }
                 expression.push(currSymbol);
                 currSymbol = "";
                 expression.push(id);
             }
+            result = null;
             currSymbol += strings[id];
             if (currSymbol.length > 7) {
                 expression = ["DIGIT LIMIT MET"];
