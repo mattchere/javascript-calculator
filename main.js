@@ -4,7 +4,7 @@ $(document).ready(function () {
         mult: "&times;",
         subt: "&minus;",
         add: "&plus;",
-        point: "&point;",
+        point: ".",
         zero: "0",
         one: "1",
         two: "2",
@@ -50,7 +50,6 @@ $(document).ready(function () {
         else {
             exp = expression.join("");
         }
-        console.log(exp + current);
         $(".expression p").html(exp + current);
         return exp + current;
     }
@@ -60,17 +59,22 @@ $(document).ready(function () {
                 return !operations.hasOwnProperty(item);
             })
             .map(function (item) {
-                return parseInt(item);
+                return parseFloat(item);
             });
         var ops = expression.filter(function (item) {
             return operations.hasOwnProperty(item);
         });
         var initial = operands.shift();
-        return operands.reduce(function (init, op) {
+        var res = operands.reduce(function (init, op) {
             var result = operations[ops[0]](init, op);
             ops.shift();
             return result;
-        }, initial);
+        }, initial)
+        if (res%1 != 0) {
+            return res.toFixed(2);
+        }
+        return res;
+        
     }
 
     $(".btn").click(function (event) {
@@ -80,7 +84,7 @@ $(document).ready(function () {
             showExpression(expression, "");
             if (id === "ac") {
                 expression = [];
-                showExpression(expression, "0");
+                //showExpression(expression, "0");
             }
             showSymbol("0");
         } else if (id === "equals") {
@@ -99,7 +103,6 @@ $(document).ready(function () {
             }
             currSymbol += strings[id];
             if (currSymbol.length > 7) {
-                alert(currSymbol);
                 expression = ["DIGIT LIMIT MET"];
                 currSymbol = "  ERROR";
             }
